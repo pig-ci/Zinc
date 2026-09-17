@@ -1,0 +1,497 @@
+/* 全局顏色變數 (亮色主題) */
+:root {
+  --bg-color: #f8f9fa;
+  --surface-color: #ffffff;
+  --text-main: #202124;
+  --text-muted: #5f6368;
+  --text-title: #3c4043;
+  --border-color: #dadce0;
+  
+  --primary-color: #1a73e8;
+  --primary-hover: #1557b0;
+  --success-color: #34a853;
+  --success-hover: #2d8e47;
+  --danger-color: #ea4335;
+  --danger-hover: #c5221f;
+  
+  --hover-bg: #f1f3f4;
+  --editor-text: #333333;
+  --toast-bg: #323232;
+  --toast-text: #ffffff;
+  --shadow-color: rgba(60, 64, 67, 0.15);
+  --shadow-light: rgba(0, 0, 0, 0.05);
+}
+
+/* 暗色主題色彩設定 */
+[data-theme="dark"] {
+  --bg-color: #121212;
+  --surface-color: #1e1e1e;
+  --text-main: #e8eaed;
+  --text-muted: #9aa0a6;
+  --text-title: #e8eaed;
+  --border-color: #3c4043;
+  
+  --primary-color: #8ab4f8;
+  --primary-hover: #aecbfa;
+  --success-color: #81c995;
+  --success-hover: #a8dab5;
+  --danger-color: #f28b82;
+  --danger-hover: #f6aea9;
+  
+  --hover-bg: #2d2e30;
+  --editor-text: #e8eaed;
+  --toast-bg: #e8eaed;
+  --toast-text: #202124;
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --shadow-light: rgba(0, 0, 0, 0.2);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* 頂部標題列與工具列 */
+header {
+  background-color: var(--surface-color);
+  border-bottom: 1px solid var(--border-color);
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 1px 3px var(--shadow-light);
+  position: relative;
+}
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.brand-and-title {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.brand-logo {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--primary-color);
+  letter-spacing: -0.5px;
+  user-select: none;
+}
+.file-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-title);
+  border: 1px transparent;
+  padding: 4px 8px;
+  border-radius: 4px;
+  outline: none;
+  max-width: 200px;
+  background-color: transparent;
+}
+.file-title:focus {
+  border-color: var(--primary-color);
+  background-color: var(--surface-color);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* SVG 漢堡與主題切換按鈕 */
+.icon-toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  color: var(--text-title);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, transform 0.2s ease, color 0.2s;
+}
+.icon-toggle-btn:hover {
+  background-color: var(--hover-bg);
+  color: var(--primary-color);
+}
+.hamburger-btn {
+  display: none;
+}
+
+/* SVG 動畫線條控制 */
+.menu-icon line {
+  stroke-dasharray: 16;
+  stroke-dashoffset: 0;
+  transition: transform 0.3s ease, opacity 0.2s ease, stroke-dashoffset 0.3s ease;
+  transform-origin: center;
+}
+
+.hamburger-btn.active .line-top {
+  transform: translateY(7px) rotate(45deg) scaleX(1.8);
+}
+.hamburger-btn.active .line-middle {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.hamburger-btn.active .line-bottom {
+  transform: translateY(-7px) rotate(-45deg) scaleX(1.8);
+}
+
+/* 操作按鈕組 */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.btn {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background-color 0.2s, opacity 0.2s;
+}
+[data-theme="dark"] .btn {
+  color: #121212;
+}
+.btn:hover {
+  background-color: var(--primary-hover);
+}
+.btn-secondary {
+  background-color: var(--surface-color);
+  color: var(--text-title);
+  border: 1px solid var(--border-color);
+}
+.btn-secondary:hover {
+  background-color: var(--hover-bg);
+}
+/* 修正：深色模式下的次要按鈕 (如「載入 ZINC」與「復原/重做」) 文字與背景顏色 */
+[data-theme="dark"] .btn-secondary {
+  color: var(--text-title);               /* 使用亮色文字，避免與背景融為一體 */
+  background-color: var(--surface-color); /* 保持深色背景 */
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background-color: var(--hover-bg);       /* 滑鼠懸停時的背景色 */
+  color: var(--primary-color);            /* 滑鼠懸停時文字變為主題藍色 */
+}
+.btn-image {
+  background-color: var(--success-color);
+}
+.btn-image:hover {
+  background-color: var(--success-hover);
+}
+.btn-zip {
+  background-color: var(--danger-color);
+}
+.btn-zip:hover {
+  background-color: var(--danger-hover);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: var(--surface-color);
+  color: var(--text-muted);
+  border-color: var(--border-color);
+}
+
+/* 工具列與復原/重做區域 */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 5px;
+}
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.icon-btn {
+  padding: 4px 10px;
+  font-size: 13px;
+}
+
+/* 編輯區與檢視區 */
+main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  background-color: var(--bg-color);
+}
+.editor-container {
+  width: 100%;
+  max-width: 816px;
+  min-height: 1056px;
+  background-color: var(--surface-color);
+  box-shadow: 0 1px 3px var(--shadow-color);
+  padding: 60px;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+}
+textarea {
+  width: 100%;
+  height: 100%;
+  min-height: 900px;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: 'Courier New', Courier, monospace, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--editor-text);
+  background-color: transparent;
+}
+
+/* 多媒體預覽容器 */
+.media-viewer {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  height: 100%;
+}
+.media-viewer img {
+  max-width: 100%;
+  max-height: 700px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  object-fit: contain;
+}
+.zip-icon-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 40px;
+  background-color: var(--hover-bg);
+  border-radius: 8px;
+  border: 2px dashed var(--border-color);
+}
+
+#file-input, #image-input, #zip-input {
+  display: none;
+}
+
+/* Toast 通知樣式 */
+.toast-container {
+  position: fixed;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+.toast {
+  background-color: var(--toast-bg);
+  color: var(--toast-text);
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  box-shadow: 0 3px 6px var(--shadow-color);
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateY(20px);
+}
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.toast.error {
+  background-color: var(--danger-color);
+  color: #ffffff;
+}
+/* 最近開啟紀錄樣式 */
+.recent-files-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 20px;
+  background-color: var(--surface-color);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 13px;
+}
+
+.recent-title {
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.recent-list {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+}
+
+.recent-item-btn {
+  background-color: var(--hover-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.recent-item-btn:hover {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  border-color: var(--primary-color);
+}
+/* 清除歷史紀錄按鈕 */
+.btn-clear-recent {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.btn-clear-recent:hover {
+  background-color: var(--hover-bg);
+  color: var(--danger-color);
+}
+
+/* 拖曳上傳遮罩樣式 */
+.drag-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.drag-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drag-message {
+  border: 2px dashed var(--primary-color);
+  background-color: var(--surface-color);
+  padding: 30px 50px;
+  border-radius: 12px;
+  text-align: center;
+  color: var(--text-title);
+  font-size: 18px;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+/* RWD */
+@media (max-width: 640px) {
+  .hamburger-btn {
+    display: flex;
+  }
+  .nav-menu {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background-color: var(--surface-color);
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color);
+  }
+  .nav-menu.active {
+    display: flex;
+  }
+  .action-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+  .action-buttons .btn {
+    width: 100%;
+  }
+  .toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding-top: 10px;
+  }
+  .editor-container {
+    padding: 20px;
+    min-height: 500px;
+  }
+}
+/* 滾動條整體樣式 */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* 軌道樣式 */
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+
+/* 滑塊預設樣式 */
+::-webkit-scrollbar-thumb {
+  background-color: var(--border-color);
+  border-radius: 6px;
+  border: 2px solid var(--bg-color); /* 利用邊框營造縮進效果 */
+}
+
+/* 滑鼠懸停滑塊 */
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-muted);
+}
+
+/* 拖曳中滑塊 */
+::-webkit-scrollbar-thumb:active {
+  background-color: var(--primary-color);
+}
+
+/* 邊角 */
+::-webkit-scrollbar-corner {
+  background-color: var(--bg-color);
+}
